@@ -5,6 +5,7 @@ from prophet import Prophet
 from prophet.plot import plot_plotly
 from plotly import graph_objs as go
 import matplotlib.pyplot as plt
+import pandas as pd
 
 START = "2015-01-01"
 TODAY = date.today().strftime("%Y-%m-%d")
@@ -40,6 +41,8 @@ def plot_raw_data(data):
 plot_raw_data(data)
 
 df_train = data[['Date', 'Close']].rename(columns={"Date": "ds", "Close": "y"})
+df_train['y'] = pd.to_numeric(df_train['y'], errors='coerce')
+df_train = df_train.dropna()
 
 @st.cache_resource
 def train_prophet(df):
